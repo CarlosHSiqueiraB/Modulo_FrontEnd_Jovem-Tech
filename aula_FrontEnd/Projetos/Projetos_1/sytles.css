@@ -14,11 +14,21 @@ body{
     padding: 20px;
 }
 
-.cabecalho{
+#conteudo{
+    align-self: center;
+    justify-self: center;
     border: #000000 solid 1px;
+    width: 1000px;
+    box-shadow: 4px 5px 15px;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+.cabecalho{
+    
+    justify-self: center;
     margin-bottom: 40px;
-    box-shadow: 1px 9px 10px;
-    justify-content: center;
+    box-shadow: 4px 5px 15px;
     padding: 20px;
     border-radius: 30px;
 }
