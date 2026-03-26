@@ -14,6 +14,19 @@ body{
     padding: 20px;
 }
 
+.rodape{
+    align-self: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    justify-self: center;
+    border: #000000 solid 1px;
+    width: 1000px;
+    box-shadow: 4px 5px 15px;
+    padding: 20px;
+    border-radius: 30px;
+}
+
 #conteudo{
     align-self: center;
     justify-self: center;
@@ -21,6 +34,7 @@ body{
     width: 1000px;
     box-shadow: 4px 5px 15px;
     padding: 20px;
+    margin-bottom: 40px;
     border-radius: 30px;
 }
 
