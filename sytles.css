@@ -1,0 +1,20 @@
+:root{
+    --cor-primaria: #ff1313;
+    --cor-texto: #000000;
+}
+
+h1{
+    font-size: 55px;
+}
+
+body{
+    margin: 20px;
+}
+
+a{
+    transition: all 0.3s ease-in-out;
+}
+
+a:hover{
+    background-color: aliceblue;
+}
