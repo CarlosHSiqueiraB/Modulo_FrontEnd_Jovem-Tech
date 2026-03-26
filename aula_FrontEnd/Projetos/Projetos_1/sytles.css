@@ -11,6 +11,16 @@ h1{
 
 body{
     margin: 20px;
+    padding: 20px;
+}
+
+.cabecalho{
+    border: #000000 solid 1px;
+    margin-bottom: 40px;
+    box-shadow: 1px 9px 10px;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 30px;
 }
 
 a{
