@@ -229,10 +229,10 @@ function responder(indiceEscolhido) {
 
   setTimeout(function () {
     if (acertou) {
-      let pts = calcularPontos(estado.timerSegundos);
-      estado.pontos += pts;
+      let pontosGanhos = calcularPontos(estado.timerSegundos);
+      estado.pontos += pontosGanhos;
       estado.acertos++;
-      mostrarFeedback(true, pts, pergunta.explicacao);
+      mostrarFeedback(true, pontosGanhos, pergunta.explicacao);
     } else {
       estado.erros++;
       mostrarFeedback(false, 0, pergunta.explicacao);
@@ -255,7 +255,6 @@ function mostrarFeedback(acertou, pontosGanhos, explicacao) {
     els.feedbackTitulo.className = "feedback-titulo-erro";
     els.feedbackPontos.textContent = "+0";
   }
-
   els.feedbackExplic.textContent = explicacao;
   els.placarParcial.textContent = estado.pontos;
 
@@ -268,7 +267,7 @@ function mostrarFeedback(acertou, pontosGanhos, explicacao) {
 // Senão → mostrarResultado().
 function proximaPergunta() {
   estado.indiceAtual++;
-  if ((estado, indiceAtual <= estado.perguntasJogo.length)) {
+  if (estado.indiceAtual < estado.perguntasJogo.length) {
     mostrarTela("questao");
     mostrarPergunta();
   } else {
@@ -284,26 +283,41 @@ els.btnProxima.addEventListener("click", proximaPergunta);
 // Chama mostrarTela("resultado").
 function mostrarResultado() {
   let total = estado.perguntasJogo.length;
-  let aproveitamento = Math.round((estados.acertos / total) * 100);
+  let aproveitamento = Math.round((estado.acertos / total) * 100);
 
+  let mensagem = "Continue praticando!";
   let medalha = "🪦";
   if (aproveitamento >= 90) {
     medalha = "🏆";
+    mensagem = "Parabéns!";
   } else if (aproveitamento >= 70) {
     medalha = "🥈";
+    mensagem = "Você está quase lá";
   } else {
     medalha = "🥉";
+    mensagem = "Faltou um pouco";
   }
 
-  let mensagem = "Continue praticando!";
+  els.resultadoMedalha.textContent = medalha;
+  els.resultadoNome.textContent = estado.nickName;
+  els.scoreFinal.textContent = estado.pontos;
+  els.statAcertos.textContent = estado.acertos;
+  els.statErros.textContent = estado.erros;
+  els.statPorcento.textContent = aproveitamento + "%";
+  els.resultadoMsg.textContent = mensagem;
+
   mostrarTela("resultado");
 }
 
 // reiniciarJogo()
 // Limpa o campo de nickname.
 // Chama mostrarTela("home").
-function reiniciarJogo() {}
+function reiniciarJogo() {
+  els.inputNickname.value = "";
+  mostrarTela("home");
+}
 
+els.btnJogarNovamente.addEventListener("click", reiniciarJogo);
 // ------------------------------------------------------------
 // 5. EVENTOS
 // Conecte os botões às funções com addEventListener.
@@ -327,6 +341,13 @@ els.btnIniciar.addEventListener("click", iniciarJogo);
 // Ela deve preencher totalPerguntas e totalCategorias na home.
 // ------------------------------------------------------------
 function init() {
-  mostrarTela("home");
+  let categorias = [];
+
+  for (let i = 0; i < perguntas.length; i++) {
+    if (categorias.indexOf(perguntas[i].categoria) === -1) {
+      categorias.push(perguntas[i].categoria);
+    }
+  }
+
+  
 }
-init();
