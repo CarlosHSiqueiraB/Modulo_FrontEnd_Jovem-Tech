@@ -345,9 +345,19 @@ function init() {
 
   for (let i = 0; i < perguntas.length; i++) {
     if (categorias.indexOf(perguntas[i].categoria) === -1) {
+      console.log(perguntas[i].categorias);
+      console.log(
+        "resultado da verificação" +
+          categorias.indexOf(perguntas[i].categorias),
+      );
+      console.log(perguntas[i].categorias);
+      console.log(categorias);
       categorias.push(perguntas[i].categoria);
     }
   }
+  console.log(categorias)
 
-  
+  els.totalPerguntas.textContent = perguntas.length
+  els.totalCategorias.textContent = categorias.length
 }
+init();
