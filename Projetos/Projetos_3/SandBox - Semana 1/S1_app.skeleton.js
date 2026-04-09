@@ -207,74 +207,97 @@ function iniciarTimer() {}
 // Marca botões com classList: "correta" e "errada".
 // setTimeout de 1s → mostrarFeedback().
 function responder(indiceEscolhido) {
-  if (estado.respondeu){
-    return
-  } 
+  if (estado.respondeu) {
+    return;
+  }
 
-  estado.respondeu = true
+  estado.respondeu = true;
 
-  let pergunta = estado.perguntasJogo[estado.indiceAtual]
-  let acertou = (indiceEscolhido === pergunta.correta)
+  let pergunta = estado.perguntasJogo[estado.indiceAtual];
+  let acertou = indiceEscolhido === pergunta.correta;
 
-  let botoes = els.opcoesGrid.querySelectorAll(".opcao-btn")
+  let botoes = els.opcoesGrid.querySelectorAll(".opcao-btn");
 
-  botoes.forEach(function(btn, idx){
-    btn.disabled = true
-    if(idx === pergunta.correta){
-      btn.classList.add("correta")
-    } else if (idx === indiceEscolhido){
-      btn.classList.add("errada")
+  botoes.forEach(function (btn, idx) {
+    btn.disabled = true;
+    if (idx === pergunta.correta) {
+      btn.classList.add("correta");
+    } else if (idx === indiceEscolhido) {
+      btn.classList.add("errada");
     }
-  })
+  });
 
- setTimeout(function(){
-    if(acertou){
-      let pts = calcularPontos(estado.timerSegundos)
-      estado.pontos += pts
-      estado.acertos++
-      mostrarFeedback(true, pts, pergunta.explicacao)
-    } else{
-      estado.erros++
-      mostrarFeedback(false, 0, pergunta.explicacao)
+  setTimeout(function () {
+    if (acertou) {
+      let pts = calcularPontos(estado.timerSegundos);
+      estado.pontos += pts;
+      estado.acertos++;
+      mostrarFeedback(true, pts, pergunta.explicacao);
+    } else {
+      estado.erros++;
+      mostrarFeedback(false, 0, pergunta.explicacao);
     }
- }, 1000)
-
+  }, 1000);
 }
 
 // mostrarFeedback(acertou, pontosGanhos, explicacao)
 // Atualiza ícone, título, pontos e explicação.
 // Chama mostrarTela("feedback").
 function mostrarFeedback(acertou, pontosGanhos, explicacao) {
-  if(acertou){
-    els.feedbackIcone.textContent = "😀✳️🤌"
-    els.feedbackTitulo.textContent = "Correto!"
-    els.feedbackTitulo.className = "feedback-titulo-acerto"
-    els.feedbackPontos.textContent = "+"+pontosGanhos
-  }else{
-    els.feedbackIcone.textContent = "🥲❌"
-    els.feedbackTitulo.textContent = "Incorreto!"
-    els.feedbackTitulo.className = "feedback-titulo-erro"
-    els.feedbackPontos.textContent = "+0"
+  if (acertou) {
+    els.feedbackIcone.textContent = "😀✳️🤌";
+    els.feedbackTitulo.textContent = "Correto!";
+    els.feedbackTitulo.className = "feedback-titulo-acerto";
+    els.feedbackPontos.textContent = "+" + pontosGanhos;
+  } else {
+    els.feedbackIcone.textContent = "🥲❌";
+    els.feedbackTitulo.textContent = "Incorreto!";
+    els.feedbackTitulo.className = "feedback-titulo-erro";
+    els.feedbackPontos.textContent = "+0";
   }
 
-els.feedbackExplic.textContent = explicacao
-els.placarParcial.textContent = estado.pontos
+  els.feedbackExplic.textContent = explicacao;
+  els.placarParcial.textContent = estado.pontos;
 
-
-mostrarTela("feedback")
+  mostrarTela("feedback");
 }
 
 // proximaPergunta()
 // indiceAtual++
 // Se ainda há perguntas → mostrarPergunta().
 // Senão → mostrarResultado().
-function proximaPergunta() {}
+function proximaPergunta() {
+  estado.indiceAtual++;
+  if ((estado, indiceAtual <= estado.perguntasJogo.length)) {
+    mostrarTela("questao");
+    mostrarPergunta();
+  } else {
+    mostrarResultado();
+  }
+}
+
+els.btnProxima.addEventListener("click", proximaPergunta);
 
 // mostrarResultado()
 // Calcula aproveitamento. Define medalha e mensagem.
 // Atualiza DOM da tela de resultado.
 // Chama mostrarTela("resultado").
-function mostrarResultado() {}
+function mostrarResultado() {
+  let total = estado.perguntasJogo.length;
+  let aproveitamento = Math.round((estados.acertos / total) * 100);
+
+  let medalha = "🪦";
+  if (aproveitamento >= 90) {
+    medalha = "🏆";
+  } else if (aproveitamento >= 70) {
+    medalha = "🥈";
+  } else {
+    medalha = "🥉";
+  }
+
+  let mensagem = "Continue praticando!";
+  mostrarTela("resultado");
+}
 
 // reiniciarJogo()
 // Limpa o campo de nickname.
