@@ -191,6 +191,7 @@ function mostrarPergunta() {
 
     els.opcoesGrid.appendChild(btn);
   }
+  iniciarTimer()
 }
 
 // iniciarTimer()
@@ -198,7 +199,37 @@ function mostrarPergunta() {
 // clearInterval antes de criar um novo setInterval.
 // A cada 1000ms: decrementa, atualiza DOM, move arco SVG.
 // Se timerSegundos <= 0: clearInterval e responder(-1).
-function iniciarTimer() {}
+function iniciarTimer() {
+  let circunferencia = 107;
+
+  estado.timerSegundos = 20;
+  els.timerNum.textContent = 20;
+  els.timerArco.style.strokeDashoffset = 0;
+  els.timerArco.style.stroke = "var(--Laranja)";
+
+  clearInterval(estado.timerIntervalo);
+
+  estado.timerIntervalo = setInterval(function () {
+    estado.timerSegundos--;
+    els.timerNum.textContent = estado.timerSegundos;
+
+    let progresso = estado.timerSegundos/20
+
+    els.timerArco.style.strokeDashoffset = circunferencia * (1-progresso)
+
+    if(estado.timerSegundos <= 5){
+      els.timerArco.style.stroke = "var(--vermelho)"
+    } else if(estado.timerSegundos <= 10){
+      els.timerArco.style.stroke = "var(--amarelo)"
+    }
+
+    if(estado.timerSegundos <= 0){
+      clearInterval(estado.timerIntervalo)
+      responder(-1)
+    }
+  }, 1000);
+
+}
 
 // responder(indiceEscolhido)
 // Guarda de segurança: if (estado.respondeu) return.
@@ -355,9 +386,9 @@ function init() {
       categorias.push(perguntas[i].categoria);
     }
   }
-  console.log(categorias)
+  console.log(categorias);
 
-  els.totalPerguntas.textContent = perguntas.length
-  els.totalCategorias.textContent = categorias.length
+  els.totalPerguntas.textContent = perguntas.length;
+  els.totalCategorias.textContent = categorias.length;
 }
 init();
