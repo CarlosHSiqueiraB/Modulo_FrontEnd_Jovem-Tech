@@ -15,7 +15,6 @@
 // =============================================
 
 const perguntas = [
-
   // ── HTML ──────────────────────────────────
   {
     id: 1,
@@ -23,7 +22,8 @@ const perguntas = [
     pergunta: "Qual tag define o título mais importante de uma página?",
     opcoes: ["<title>", "<h1>", "<header>", "<strong>"],
     correta: 1,
-    explicacao: "<h1> é o cabeçalho de nível 1, o mais importante da hierarquia."
+    explicacao:
+      "<h1> é o cabeçalho de nível 1, o mais importante da hierarquia.",
   },
   {
     id: 2,
@@ -31,7 +31,8 @@ const perguntas = [
     pergunta: "Para criar um link em HTML, qual tag usamos?",
     opcoes: ["<link>", "<url>", "<a>", "<href>"],
     correta: 2,
-    explicacao: "A tag <a> (âncora) cria links. O destino vai no atributo href."
+    explicacao:
+      "A tag <a> (âncora) cria links. O destino vai no atributo href.",
   },
   {
     id: 3,
@@ -39,7 +40,8 @@ const perguntas = [
     pergunta: "Qual atributo define o endereço de destino de um link?",
     opcoes: ["src", "href", "link", "url"],
     correta: 1,
-    explicacao: "O atributo href (Hypertext Reference) define o destino do link."
+    explicacao:
+      "O atributo href (Hypertext Reference) define o destino do link.",
   },
   {
     id: 4,
@@ -47,7 +49,7 @@ const perguntas = [
     pergunta: "Qual tag cria uma lista não ordenada?",
     opcoes: ["<ol>", "<li>", "<ul>", "<list>"],
     correta: 2,
-    explicacao: "<ul> = unordered list. <ol> é a lista ordenada (com números)."
+    explicacao: "<ul> = unordered list. <ol> é a lista ordenada (com números).",
   },
 
   // ── CSS ───────────────────────────────────
@@ -55,9 +57,14 @@ const perguntas = [
     id: 5,
     categoria: "CSS",
     pergunta: "Como selecionamos um elemento pela sua classe no CSS?",
-    opcoes: ["#minha-classe", ".minha-classe", "*minha-classe", "@minha-classe"],
+    opcoes: [
+      "#minha-classe",
+      ".minha-classe",
+      "*minha-classe",
+      "@minha-classe",
+    ],
     correta: 1,
-    explicacao: "O ponto (.) seleciona por classe. O # seleciona por ID."
+    explicacao: "O ponto (.) seleciona por classe. O # seleciona por ID.",
   },
   {
     id: 6,
@@ -65,7 +72,7 @@ const perguntas = [
     pergunta: "Qual propriedade muda a cor do texto?",
     opcoes: ["background-color", "font-color", "text-color", "color"],
     correta: 3,
-    explicacao: "A propriedade color define a cor do texto."
+    explicacao: "A propriedade color define a cor do texto.",
   },
   {
     id: 7,
@@ -73,7 +80,8 @@ const perguntas = [
     pergunta: "Para centralizar elementos lado a lado, qual display usamos?",
     opcoes: ["block", "inline", "flex", "grid-center"],
     correta: 2,
-    explicacao: "display: flex ativa o Flexbox, o sistema de layout mais usado hoje."
+    explicacao:
+      "display: flex ativa o Flexbox, o sistema de layout mais usado hoje.",
   },
   {
     id: 8,
@@ -81,7 +89,7 @@ const perguntas = [
     pergunta: "Qual propriedade arredonda as bordas de um elemento?",
     opcoes: ["border-style", "border-curve", "border-radius", "border-round"],
     correta: 2,
-    explicacao: "border-radius define o arredondamento dos cantos."
+    explicacao: "border-radius define o arredondamento dos cantos.",
   },
 
   // ── JavaScript ────────────────────────────
@@ -91,7 +99,8 @@ const perguntas = [
     pergunta: "Como declaramos uma variável que não vai mudar de valor?",
     opcoes: ["var", "let", "const", "fix"],
     correta: 2,
-    explicacao: "const declara constantes. let declara variáveis que podem mudar."
+    explicacao:
+      "const declara constantes. let declara variáveis que podem mudar.",
   },
   {
     id: 10,
@@ -101,25 +110,29 @@ const perguntas = [
       "document.getElement()",
       "document.getElementById()",
       "document.selectId()",
-      "document.findById()"
+      "document.findById()",
     ],
     correta: 1,
-    explicacao: "getElementById() busca um elemento único pelo seu atributo id."
-  }
-
-]
+    explicacao:
+      "getElementById() busca um elemento único pelo seu atributo id.",
+  },
+];
 
 const fontes = [
   {
-    url: "https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple&encode=base64"
-    categoria: "Filme" 
+    url: "https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple&encode=base64",
+    categoria: "Filme",
   },
   {
-url: "https://opentdb.com/api.php?amount=4&difficulty=medium&type=multiple&encode=base64"
-    categoria: "Conhecimentos Gerai em Inglês" 
+    url: "https://opentdb.com/api.php?amount=4&difficulty=medium&type=multiple&encode=base64",
+    categoria: "Conhecimentos Gerai em Inglês",
   },
   {
-url: "https://opentdb.com/api.php?amount=3&difficulty=medium&type=multiple&encode=base64"
-    categoria: "Geografia" 
+    url: "https://opentdb.com/api.php?amount=3&difficulty=medium&type=multiple&encode=base64",
+    categoria: "Geografia",
   },
-]
+  {
+    url: "https://opentdb.com/api.php?amount=8&difficulty=medium&type=multiple&encode=base64",
+    categoria: "Video Games",
+  },
+];
