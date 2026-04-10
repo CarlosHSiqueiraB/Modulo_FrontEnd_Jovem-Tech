@@ -218,9 +218,9 @@ function iniciarTimer() {
     els.timerArco.style.strokeDashoffset = circunferencia * (1-progresso)
 
     if(estado.timerSegundos <= 5){
-      els.timerArco.style.stroke = "var(--vermelho)"
+      els.timerArco.style.stroke = "var(--Vermelho)"
     } else if(estado.timerSegundos <= 10){
-      els.timerArco.style.stroke = "var(--amarelo)"
+      els.timerArco.style.stroke = "var(--Amarelo)"
     }
 
     if(estado.timerSegundos <= 0){

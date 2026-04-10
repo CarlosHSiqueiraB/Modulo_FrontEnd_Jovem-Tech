@@ -108,3 +108,18 @@ const perguntas = [
   }
 
 ]
+
+const fontes = [
+  {
+    url: "https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple&encode=base64"
+    categoria: "Filme" 
+  },
+  {
+url: "https://opentdb.com/api.php?amount=4&difficulty=medium&type=multiple&encode=base64"
+    categoria: "Conhecimentos Gerai em Inglês" 
+  },
+  {
+url: "https://opentdb.com/api.php?amount=3&difficulty=medium&type=multiple&encode=base64"
+    categoria: "Geografia" 
+  },
+]
