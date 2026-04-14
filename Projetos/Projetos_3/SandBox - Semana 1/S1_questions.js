@@ -230,7 +230,20 @@ async function buscarDeFonte(fonte, offsetId) {
 // Só continua quando todos terminarem.
 // Mais rápido do que fazer um por um.
 
-async function carregarPerguntas() {}
+async function carregarPerguntas() {
+  try{
+    let promessas = fontes.map(function(fonte,i){
+      return buscarDeFonte(fonte, i * 5)
+    })
+
+    let resultados = await Promise.all(promessas)
+    let totalPerguntas = [].concat.apply([], resultados)
+    return embaralhar(totalPerguntas)
+  } catch(error){
+    console.error("[QuizCaju] Falha ao carregar perguntas", error)
+    return perguntas
+  }
+}
 
 // ── EXPOSIÇÃO PÚBLICA ─────────────────────────
 // O app.js awaita esta Promise para ter o array pronto.
@@ -243,4 +256,4 @@ async function carregarPerguntas() {}
 //   var perguntas = await window.bancoDePerguntasAsync
 //   → aí o array está pronto para usar
 
-// window.bancoDePerguntasAsync = carregarPerguntas()
+window.bancoDePerguntasAsync = carregarPerguntas()
