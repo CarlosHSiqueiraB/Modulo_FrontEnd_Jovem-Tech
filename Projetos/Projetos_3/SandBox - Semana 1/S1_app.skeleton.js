@@ -45,6 +45,7 @@ const els = {
   btnIniciar: document.getElementById("btn-iniciar"),
   totalPerguntas: document.getElementById("total-perguntas"),
   totalCategorias: document.getElementById("total-categorias"),
+  loadingMsg: document.getElementById("loading-msg"),
 
   // questão
   questaoAtual: document.getElementById("questao-atual"),
@@ -122,7 +123,7 @@ function calcularPontos(segundosRestantes) {
 // Valida nickname (mínimo 2 chars).
 // Reseta o estado. Embaralha as perguntas.
 // Chama mostrarTela("questao") e mostrarPergunta().
-function iniciarJogo() {
+async function iniciarJogo() {
   let nome = els.inputNickname.value.trim();
 
   if (nome.length < 3) {
@@ -137,7 +138,8 @@ function iniciarJogo() {
   estado.erros = 0;
   estado.indiceAtual = 0;
 
-  estado.perguntasJogo = embaralhar(perguntas);
+  var todasPerguntas = await window.bancoDePerguntasAsync;
+  estado.perguntasJogo = embaralhar(todasPerguntas);
   mostrarTela("questao");
   mostrarPergunta();
 }
@@ -191,7 +193,7 @@ function mostrarPergunta() {
 
     els.opcoesGrid.appendChild(btn);
   }
-  iniciarTimer()
+  iniciarTimer();
 }
 
 // iniciarTimer()
@@ -213,22 +215,21 @@ function iniciarTimer() {
     estado.timerSegundos--;
     els.timerNum.textContent = estado.timerSegundos;
 
-    let progresso = estado.timerSegundos/20
+    let progresso = estado.timerSegundos / 20;
 
-    els.timerArco.style.strokeDashoffset = circunferencia * (1-progresso)
+    els.timerArco.style.strokeDashoffset = circunferencia * (1 - progresso);
 
-    if(estado.timerSegundos <= 5){
-      els.timerArco.style.stroke = "var(--Vermelho)"
-    } else if(estado.timerSegundos <= 10){
-      els.timerArco.style.stroke = "var(--Amarelo)"
+    if (estado.timerSegundos <= 5) {
+      els.timerArco.style.stroke = "var(--Vermelho)";
+    } else if (estado.timerSegundos <= 10) {
+      els.timerArco.style.stroke = "var(--Amarelo)";
     }
 
-    if(estado.timerSegundos <= 0){
-      clearInterval(estado.timerIntervalo)
-      responder(-1)
+    if (estado.timerSegundos <= 0) {
+      clearInterval(estado.timerIntervalo);
+      responder(-1);
     }
   }, 1000);
-
 }
 
 // responder(indiceEscolhido)
@@ -245,13 +246,14 @@ function responder(indiceEscolhido) {
   estado.respondeu = true;
 
   let pergunta = estado.perguntasJogo[estado.indiceAtual];
-  let acertou = indiceEscolhido === pergunta.correta;
+  var indiceCorreto = pergunta.correta;
+  var acertou = indiceEscolhido === indiceCorreto;
 
   let botoes = els.opcoesGrid.querySelectorAll(".opcao-btn");
 
   botoes.forEach(function (btn, idx) {
     btn.disabled = true;
-    if (idx === pergunta.correta) {
+    if (idx === indiceCorreto) {
       btn.classList.add("correta");
     } else if (idx === indiceEscolhido) {
       btn.classList.add("errada");
@@ -371,24 +373,27 @@ els.btnIniciar.addEventListener("click", iniciarJogo);
 // Crie a função init() e chame ela aqui.
 // Ela deve preencher totalPerguntas e totalCategorias na home.
 // ------------------------------------------------------------
-function init() {
-  let categorias = [];
+async function init() {
+  els.btnIniciar.disabled = true;
+  els.loadingMsg.textContent = "carregando perguntas...";
 
-  for (let i = 0; i < perguntas.length; i++) {
-    if (categorias.indexOf(perguntas[i].categoria) === -1) {
-      console.log(perguntas[i].categorias);
-      console.log(
-        "resultado da verificação" +
-          categorias.indexOf(perguntas[i].categorias),
-      );
-      console.log(perguntas[i].categorias);
-      console.log(categorias);
-      categorias.push(perguntas[i].categoria);
+  try {
+    var perguntas = await window.bancoDePerguntasAsync;
+
+    var categorias = [];
+    for (var i = 0; i < perguntas.length; i++) {
+      if (categorias.indexOf(perguntas[i].categoria) === -1) {
+        categorias.push(perguntas[i].categoria);
+      }
     }
-  }
-  console.log(categorias);
 
-  els.totalPerguntas.textContent = perguntas.length;
-  els.totalCategorias.textContent = categorias.length;
+    els.totalPerguntas.textContent = perguntas.length;
+    els.totalCategorias.textContent = categorias.length;
+    els.loadingMsg.textContent = "";
+    els.btnIniciar.disabled = false;
+  } catch (erro) {
+    els.loadingMsg.textContent = "erro ao carregar. recarregue a página.";
+    console.error("[QuizCaju] Falha na inicialização:", erro);
+  }
 }
 init();
