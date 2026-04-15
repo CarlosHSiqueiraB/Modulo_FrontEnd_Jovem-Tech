@@ -118,31 +118,12 @@ const perguntas = [
   },
 ];
 
-const fontes = [
-  {
-    url: "https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple&encode=base64",
-    categoria: "Filme",
-  },
-  {
-    url: "https://opentdb.com/api.php?amount=4&difficulty=medium&type=multiple&encode=base64",
-    categoria: "Conhecimentos Gerai em Inglês",
-  },
-  {
-    url: "https://opentdb.com/api.php?amount=3&difficulty=medium&type=multiple&encode=base64",
-    categoria: "Geografia",
-  },
-  {
-    url: "https://opentdb.com/api.php?amount=8&difficulty=medium&type=multiple&encode=base64",
-    categoria: "Video Games",
-  },
-];
-
 // A API envia todos os textos em Base64 para evitar
 // problemas com acentos e caracteres especiais.
 // atob() desfaz o Base64 e devolve o texto legível.
 // Exemplo: atob("V2ViIERldg==") → "Web Dev"
 function decodificarBase64(str) {
-  return atob(str);
+  return decodeURIComponent(escape(atob(str)));
 }
 
 // Embaralha um array e retorna uma cópia
@@ -199,30 +180,10 @@ function normalizarPergunta(item, fonte, indice) {
     pergunta: pergunta,
     opcoes: opcoes,
     correta: indiceCorreta,
-    explicacao: "Fonte: open trivia DB" + decodificarBase64(item.category),
+    explicacao: "Fonte: Open Trivia DB — " + decodificarBase64(item.category),
   };
 
   return respostaNormalizada;
-}
-
-// ── BUSCA ─────────────────────────────────────
-// Busca as perguntas de uma fonte e normaliza.
-// async/await: a função pausa em cada await
-// até a resposta chegar, depois continua.
-
-async function buscarDeFonte(fonte, offsetId) {
-  let resposta = await fetch(fonte.url);
-  let dados = await resposta.json();
-
-  if (dados.response_code !== 0) {
-    throw new Error("API respondeu com código " + dados.response_code);
-  }
-
-  console.log("os dados do question e", dados);
-
-  return dados.results.map((item, i) => {
-    return normalizarPergunta(item, fonte, offsetId + i);
-  });
 }
 
 // ── ORQUESTRAÇÃO ──────────────────────────────
@@ -232,16 +193,41 @@ async function buscarDeFonte(fonte, offsetId) {
 
 async function carregarPerguntas() {
   try {
-    let promessas = fontes.map(function (fonte, i) {
-      return buscarDeFonte(fonte, i * 5);
+    let resposta = await fetch(
+      "https://opentdb.com/api.php?amount=10&difficulty=medium&type=multiple&encode=base64"
+    );
+
+    if (!resposta.ok) {
+      console.warn("Erro HTTP:", resposta.status);
+      return perguntas;
+    }
+
+    let dados = await resposta.json();
+
+    if (dados.response_code !== 0) {
+      console.warn("API respondeu com código", dados.response_code);
+      return perguntas;
+    }
+
+    let perguntasApi = dados.results.map((item, i) => {
+      return normalizarPergunta(
+        item,
+        { categoria: "API" },
+        perguntas.length + i
+      );
     });
 
-    let resultados = await Promise.all(promessas);
-    let totalPerguntas = [].concat.apply([], resultados);
-    return embaralhar(totalPerguntas);
-  } catch (error) {
-    console.error("[QuizCaju] Falha ao carregar perguntas", error);
-    return perguntas;
+    // mistura tudo
+    let todas = embaralhar(perguntas.concat(perguntasApi));
+
+    // pega só 15
+    return todas.slice(0, 15);
+
+  } catch (erro) {
+    console.warn("Erro geral:", erro);
+
+    // fallback seguro
+    return embaralhar(perguntas).slice(0, 15);
   }
 }
 
